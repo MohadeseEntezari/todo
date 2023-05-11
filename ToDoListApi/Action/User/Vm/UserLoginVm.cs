@@ -2,7 +2,6 @@
 {
     public class UserLoginVm
     {
-        public string UserFullname { get; set; }
         public string Token { get; set; }
     }
 }

@@ -1,18 +1,17 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using ToDoListApi.Data;
 using ToDoListApi.Domain;
+using ToDoListApi.Infrastructure.Authentication;
 using ToDoListApi.Infrastructure.Config;
-using ToDoListApi.Infrastructure.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -21,6 +20,9 @@ builder.Services.AddDbContext<ApplicationContextDb>(opt => opt.UseInMemoryDataba
 builder.Services.AddAutoMapperConfiguration();
 
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
+
+builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
 
 var app = builder.Build();
 
