@@ -20,11 +20,14 @@ public class User
     [Required]
     public string Password { get; set; }
 
-    public User(string firstname, string lastname, string mobile, string password)
-    {
-        Firstname = firstname;
-        Lastname = lastname;
-        Mobile = mobile;
-        Password = password;
-    }
+
+    //public User(string firstname, string lastname, string mobile, string password)
+    //{
+    //    Firstname = firstname;
+    //    Lastname = lastname;
+    //    Mobile = mobile;
+    //    Password = password;
+    //}
+        
+
 }

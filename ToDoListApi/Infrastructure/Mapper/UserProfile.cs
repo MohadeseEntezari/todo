@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ToDoListApi.Action.User.Commands.Create;
 using ToDoListApi.Domain;
+using ToDoListApi.Dto;
 
 namespace ToDoListApi.Infrastructure.Mapper
 {
@@ -8,7 +9,10 @@ namespace ToDoListApi.Infrastructure.Mapper
     {
         public UserProfile()
         {
+
             CreateMap<CreateUserCommand, User>();
+            CreateMap<User, UserDto>().ReverseMap();
+
         }
     }
 }
