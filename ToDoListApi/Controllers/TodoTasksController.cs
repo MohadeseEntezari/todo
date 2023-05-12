@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoListApi.Action.ToDoTask.Commands.Create;
 using ToDoListApi.Action.ToDoTask.Commands.Delete;
@@ -10,6 +11,7 @@ namespace ToDoListApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TodoTasksController : ControllerBase
     {
         private readonly IMediator _mediator;
