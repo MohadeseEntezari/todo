@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDoListApi.Action.User.Commands.Create;
+using ToDoListApi.Action.User.Queries.GetAll;
 using ToDoListApi.Action.User.Queries.Login;
 
 namespace ToDoListApi.Controllers
@@ -27,6 +29,14 @@ namespace ToDoListApi.Controllers
         {
             var token = await _mediator.Send(query);
             return Ok(token);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _mediator.Send(new GetAllUserQuery());
+            return Ok(users);
         }
     }
 }
