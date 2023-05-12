@@ -5,6 +5,7 @@ using System.Security.Claims;
 using ToDoListApi.Action.ToDoTask.Commands.Create;
 using ToDoListApi.Action.ToDoTask.Commands.Delete;
 using ToDoListApi.Action.ToDoTask.Commands.Update;
+using ToDoListApi.Action.ToDoTask.Commands.UpdateStatus;
 using ToDoListApi.Action.ToDoTask.Queries.GetAll;
 using ToDoListApi.Action.ToDoTask.Queries.GetById;
 using ToDoListApi.Domain;
@@ -55,6 +56,7 @@ namespace ToDoListApi.Controllers
             await _mediator.Send(command);
             return Ok();
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAll(Guid? userId)
         {
@@ -62,5 +64,12 @@ namespace ToDoListApi.Controllers
             return Ok(tasks);
         }
 
+        [HttpPatch]
+        public async Task<IActionResult> UpdateStatus(UpdateToDoTaskStatusCommand command)
+        {
+            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
+            await _mediator.Send(command);
+            return Ok();
+        }
     }
 }

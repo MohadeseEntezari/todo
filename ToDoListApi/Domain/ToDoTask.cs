@@ -22,22 +22,16 @@ public class ToDoTask
     [Required]
     public TaskStatus Status { get; set; } = TaskStatus.ToDo;
     public virtual User User { get; set; }
-    //public ToDoTask()
-    //{
-        
-    //}
-    //public ToDoTask(Guid userId, string title, DateTime taskDate, User user)
-    //{
-    //    Title = title;
-    //    UserId = userId;
-    //    TaskDate = taskDate;
-    //    User = user;
-    //}
 
     public void Update(string title, DateTime taskeDate)
     {
         Title = title;
         TaskDate = taskeDate;
+    }
+
+    public void UpdateStatus(TaskStatus status)
+    {
+        Status = status;
     }
 }
 
