@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using ToDoListApi.Action.ToDoTask.Commands.Create;
 using ToDoListApi.Action.ToDoTask.Commands.Delete;
 using ToDoListApi.Action.ToDoTask.Commands.Update;
 using ToDoListApi.Action.ToDoTask.Queries.GetAll;
 using ToDoListApi.Action.ToDoTask.Queries.GetById;
+using ToDoListApi.Domain;
 
 namespace ToDoListApi.Controllers
 {
@@ -15,6 +17,7 @@ namespace ToDoListApi.Controllers
     public class TodoTasksController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly Guid UserId;
         public TodoTasksController(IMediator mediator)
         {
             _mediator = mediator;
@@ -23,6 +26,8 @@ namespace ToDoListApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateToDoTaskCommand command)
         {
+            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
+
             var task = await _mediator.Send(command);
             return Ok(task);
         }
@@ -37,6 +42,8 @@ namespace ToDoListApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UpdateToDoTaskCommand command)
         {
+            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
+            ;
             await _mediator.Send(command);
             return Ok();
         }
@@ -44,6 +51,7 @@ namespace ToDoListApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(DeleteToDoTaskCommand command)
         {
+            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
             await _mediator.Send(command);
             return Ok();
         }

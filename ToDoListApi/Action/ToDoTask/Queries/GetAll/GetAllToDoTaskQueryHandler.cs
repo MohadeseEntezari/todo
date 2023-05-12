@@ -18,7 +18,7 @@ namespace ToDoListApi.Action.ToDoTask.Queries.GetAll
         public async Task<IEnumerable<ToDoTaskDto>> Handle(GetAllToDoTaskQuery request, CancellationToken cancellationToken)
         {
             if (request.UserId is null)
-                return _mapper.Map<IEnumerable<ToDoTaskDto>>(_context.ToDoTasks.Include("User").ToList());
+                return _mapper.Map<IEnumerable<ToDoTaskDto>>(await _context.ToDoTasks.Include("User").ToListAsync(cancellationToken: cancellationToken));
             
             return _mapper.Map<IEnumerable<ToDoTaskDto>>(_context.ToDoTasks.Include("User").Where(x => x.UserId == request.UserId));
         }

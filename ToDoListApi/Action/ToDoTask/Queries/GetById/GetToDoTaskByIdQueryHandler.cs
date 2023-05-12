@@ -17,9 +17,9 @@ namespace ToDoListApi.Action.ToDoTask.Queries.GetById
         }
         public async Task<ToDoTaskDto> Handle(GetToDoTaskByIdQuery request, CancellationToken cancellationToken)
         {
-            var task = await _context.ToDoTasks.FindAsync(request.Id, cancellationToken);
+            var task = await _context.ToDoTasks.FindAsync(request.Id);
 
-            return  _mapper.Map<ToDoTaskDto>(task);
+            return _mapper.Map<ToDoTaskDto>(task);
         }
     }
 }

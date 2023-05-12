@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 using System.Text;
 using ToDoListApi.Data;
@@ -47,10 +45,13 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddDbContext<ApplicationContextDb>(opt => opt.UseInMemoryDatabase("ToDoTaskDB"));
+
 builder.Services.AddAutoMapperConfiguration();
 
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
 builder.Services.AddScoped<IJwtTokenProvider, JwtTokenProvider>();
@@ -67,7 +68,7 @@ builder.Services.AddAuthentication(options =>
     jwt.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey =
-            true, 
+            true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = false,
         ValidateAudience = false,
@@ -75,6 +76,7 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true
     };
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
