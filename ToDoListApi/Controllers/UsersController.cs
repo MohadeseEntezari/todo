@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ToDoListApi.Action.User.Commands.Create;
-using ToDoListApi.Action.User.Queries.GetAll;
-using ToDoListApi.Action.User.Queries.Login;
-
+using ToDo.Application.Users.Commands.Create;
+using ToDo.Application.Users.Queries.GetAll;
+using ToDo.Application.Users.Queries.Login;
+using ToDo.Application.Common.Models;
 namespace ToDoListApi.Controllers
 {
     [Route("api/[controller]")]

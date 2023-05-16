@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using ToDoListApi.Action.ToDoTask.Commands.Create;
-using ToDoListApi.Action.ToDoTask.Commands.Delete;
-using ToDoListApi.Action.ToDoTask.Commands.Update;
-using ToDoListApi.Action.ToDoTask.Commands.UpdateStatus;
-using ToDoListApi.Action.ToDoTask.Queries.GetAll;
-using ToDoListApi.Action.ToDoTask.Queries.GetById;
-using ToDoListApi.Domain;
+using ToDo.Application.ToDoTasks.Commands.Create;
+using ToDo.Application.ToDoTasks.Commands.Delete;
+using ToDo.Application.ToDoTasks.Commands.Update;
+using ToDo.Application.ToDoTasks.Commands.UpdateStatus;
+using ToDo.Application.ToDoTasks.Queries.GetAll;
+using ToDo.Application.ToDoTasks.Queries.GetById;
 
 namespace ToDoListApi.Controllers
 {

@@ -5,10 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
-using ToDoListApi.Data;
-using ToDoListApi.Domain;
-using ToDoListApi.Infrastructure.Authentication;
-using ToDoListApi.Infrastructure.Config;
+using ToDo.Application.Common.Authentication;
+using ToDo.Domain.Entities;
+using ToDo.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +47,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.Get
 
 builder.Services.AddDbContext<ApplicationContextDb>(opt => opt.UseInMemoryDatabase("ToDoTaskDB"));
 
-builder.Services.AddAutoMapperConfiguration();
+//builder.Services.AddAutoMapperConfiguration();
 
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
