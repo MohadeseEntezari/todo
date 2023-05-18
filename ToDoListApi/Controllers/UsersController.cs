@@ -1,10 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDo.Application.Users.Commands.Create;
-using ToDo.Application.Users.Queries.GetAll;
 using ToDo.Application.Users.Queries.Login;
-using ToDo.Application.Common.Models;
 namespace ToDoListApi.Controllers
 {
     [Route("api/[controller]")]
@@ -20,8 +17,8 @@ namespace ToDoListApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserCommand request)
         {
-            var user = await _mediator.Send(request);
-            return Ok(user);
+             await _mediator.Send(request);
+            return Ok();
         }
 
         [HttpPost("login")]
@@ -29,14 +26,6 @@ namespace ToDoListApi.Controllers
         {
             var token = await _mediator.Send(query);
             return Ok(token);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var users = await _mediator.Send(new GetAllUserQuery());
-            return Ok(users);
         }
     }
 }

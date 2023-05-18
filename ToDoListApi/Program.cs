@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using System.Text;
+using ToDo.Application;
 using ToDo.Application.Common.Authentication;
 using ToDo.Domain.Entities;
 using ToDo.Persistence;
@@ -43,13 +43,9 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
 
-builder.Services.AddDbContext<ApplicationContextDb>(opt => opt.UseInMemoryDatabase("ToDoTaskDB"));
-
-//builder.Services.AddAutoMapperConfiguration();
-
-builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 

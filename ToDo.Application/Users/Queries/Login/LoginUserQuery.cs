@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
-using ToDo.Application.Users.Vm;
 
 namespace ToDo.Application.Users.Queries.Login
 {
-    public record LoginUserQuery : IRequest<UserLoginVm>
+    public record LoginUserQuery : IRequest<string>
     {
         [Required]
         public string Mobile { get; set; }

@@ -9,7 +9,6 @@ namespace ToDo.Application.Common.Mappings
             if (services == null) throw new ArgumentNullException(nameof(services));
             Type[] types =
             {
-            typeof(UserProfile),
             typeof(ToDoTaskProfile),
         };
             services.AddAutoMapper(types);

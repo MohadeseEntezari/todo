@@ -1,19 +1,14 @@
 ﻿using MediatR;
-using System.ComponentModel.DataAnnotations;
 using ToDo.Application.Common.Models;
+using ToDo.Domain.Entities;
 
 namespace ToDo.Application.ToDoTasks.Commands.Create
 {
-    public record CreateToDoTaskCommand : IRequest<ToDoTaskDto>
+    public record CreateToDoTaskCommand : IRequest<ToDoTask>
     {
-        [Required]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
-        [Required]
-        public string Title { get; set; }
-
-        [Required]
-        public string TaskDate { get; set; }
+        public ToDoTaskDto ToDo { get; set; }
 
     }
 }

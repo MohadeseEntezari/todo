@@ -7,7 +7,7 @@ public class ToDoTask
     public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required]
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
 
     [Required]
     public string Title { get; set; }
@@ -20,7 +20,6 @@ public class ToDoTask
 
     [Required]
     public TaskStatus Status { get; set; } = TaskStatus.ToDo;
-    public virtual User User { get; set; }
 
     public void Update(string title, DateTime taskeDate)
     {

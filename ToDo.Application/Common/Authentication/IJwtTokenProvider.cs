@@ -2,7 +2,7 @@
 {
     public interface IJwtTokenProvider
     {
-        Task<string> GenerateJwtToken(Guid userId);
+        string GenerateJwtToken(string userId);
 
     }
 }

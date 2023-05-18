@@ -17,7 +17,7 @@ namespace ToDo.Application.ToDoTasks.Commands.Update
             if (toDoTask == null)
                 throw new KeyNotFoundException();
 
-            toDoTask.Update(request.Title, DateTime.Parse(request.ToDoDate));
+            toDoTask.Update(request.ToDo.Title, DateTime.Parse(request.ToDo.TaskDate));
 
             _context.ToDoTasks.Update(toDoTask);
             await _context.SaveChangesAsync(cancellationToken);

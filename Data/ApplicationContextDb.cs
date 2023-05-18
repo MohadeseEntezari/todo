@@ -1,16 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ToDo.Domain.Entities;
 
 namespace ToDo.Persistence
 {
-    public class ApplicationContextDb : DbContext
+    public class ApplicationContextDb : IdentityDbContext<IdentityUser>
     {
-        public ApplicationContextDb(DbContextOptions option) : base(option)
+        public ApplicationContextDb(DbContextOptions<ApplicationContextDb> option) : base(option)
         {
 
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<ToDoTask> ToDoTasks { get; set; }
     }
 }

@@ -4,13 +4,8 @@ using ToDo.Application.Common.Models;
 
 namespace ToDo.Application.Users.Commands.Create
 {
-    public record CreateUserCommand : IRequest<UserDto>
+    public record CreateUserCommand : IRequest
     {
-        [Required]
-        public string Firstname { get; set; }
-
-        [Required]
-        public string Lastname { get; set; }
 
         [Required]
         public string Mobile { get; set; }

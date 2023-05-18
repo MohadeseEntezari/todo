@@ -1,26 +1,23 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ToDo.Application.Common.Models;
+using ToDo.Domain.Entities;
 using ToDo.Persistence;
 
 namespace ToDo.Application.ToDoTasks.Queries.GetAll
 {
-    public class GetAllToDoTaskQueryHandler : IRequestHandler<GetAllToDoTaskQuery, IEnumerable<ToDoTaskDto>>
+    public class GetAllToDoTaskQueryHandler : IRequestHandler<GetAllToDoTaskQuery, IEnumerable<ToDoTask>>
     {
         private readonly ApplicationContextDb _context;
-        private readonly IMapper _mapper;
-        public GetAllToDoTaskQueryHandler(ApplicationContextDb context, IMapper mapper)
+        public GetAllToDoTaskQueryHandler(ApplicationContextDb context)
         {
             _context = context;
-            _mapper = mapper;
         }
-        public async Task<IEnumerable<ToDoTaskDto>> Handle(GetAllToDoTaskQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ToDoTask>> Handle(GetAllToDoTaskQuery request, CancellationToken cancellationToken)
         {
             if (request.UserId is null)
-                return _mapper.Map<IEnumerable<ToDoTaskDto>>(await _context.ToDoTasks.Include("User").ToListAsync(cancellationToken: cancellationToken));
+                return await _context.ToDoTasks.ToListAsync(cancellationToken: cancellationToken);
 
-            return _mapper.Map<IEnumerable<ToDoTaskDto>>(_context.ToDoTasks.Include("User").Where(x => x.UserId == request.UserId));
+            return _context.ToDoTasks.Where(x => x.UserId == request.UserId);
         }
     }
 }

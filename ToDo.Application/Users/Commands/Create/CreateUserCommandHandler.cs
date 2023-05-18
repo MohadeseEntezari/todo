@@ -1,35 +1,26 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using ToDo.Application.Common.Models;
-using ToDo.Domain.Entities;
-using ToDo.Persistence;
 
 namespace ToDo.Application.Users.Commands.Create
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserDto>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand>
+
     {
-        private readonly IMapper _mapper;
-        private readonly ApplicationContextDb _context;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CreateUserCommandHandler(IMapper mapper, ApplicationContextDb context, IPasswordHasher<User> passwordHasher)
+        public CreateUserCommandHandler(UserManager<IdentityUser> userManager)
         {
-            _mapper = mapper;
-            _context = context;
-            _passwordHasher = passwordHasher;
+            _userManager = userManager;
         }
-        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-
-            var user = _mapper.Map<User>(request);
-
-            user.Password = _passwordHasher.HashPassword(user, user.Password);
-
-            await _context.Users.AddAsync(user, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return _mapper.Map<UserDto>(user);
+            var user = new IdentityUser { UserName = request.Mobile, PhoneNumber = request.Mobile };
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.FirstOrDefault().Description);
+            }
+         
         }
     }
 }

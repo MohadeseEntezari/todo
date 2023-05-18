@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using ToDo.Application.Common.Models;
 using ToDo.Application.ToDoTasks.Commands.Create;
 using ToDo.Application.ToDoTasks.Commands.Delete;
 using ToDo.Application.ToDoTasks.Commands.Update;
@@ -17,18 +18,20 @@ namespace ToDoListApi.Controllers
     public class TodoTasksController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly Guid UserId;
         public TodoTasksController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateToDoTaskCommand command)
+        public async Task<IActionResult> Create(ToDoTaskDto dto)
         {
-            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
+            var userId = Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value;
+            if (userId == null)
+                return Unauthorized();
 
-            var task = await _mediator.Send(command);
+            var task = await _mediator.Send(new CreateToDoTaskCommand { UserId = userId, ToDo = dto });
+
             return Ok(task);
         }
 
@@ -39,35 +42,45 @@ namespace ToDoListApi.Controllers
             return Ok(task);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(UpdateToDoTaskCommand command)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, ToDoTaskDto dto)
         {
-            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
-            ;
-            await _mediator.Send(command);
+            var userId = Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value;
+            if (userId == null)
+                return Unauthorized();
+
+            await _mediator.Send(new UpdateToDoTaskCommand { Id = id, ToDo = dto, UserId = userId });
             return Ok();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(DeleteToDoTaskCommand command)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
-            await _mediator.Send(command);
+            var userId = Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value;
+            if (userId == null)
+                return Unauthorized();
+
+
+            await _mediator.Send(new DeleteToDoTaskCommand { Id = id, UserId = userId });
             return Ok();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(Guid? userId)
+        public async Task<IActionResult> GetAll(string userId)
         {
             var tasks = await _mediator.Send(new GetAllToDoTaskQuery(userId));
             return Ok(tasks);
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> UpdateStatus(UpdateToDoTaskStatusCommand command)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateStatus(Guid id, TaskStatus status)
         {
-            command.UserId = Guid.Parse(Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value);
-            await _mediator.Send(command);
+            var userId = Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid).Value;
+            if (userId == null)
+                return Unauthorized();
+
+
+            await _mediator.Send(new UpdateToDoTaskStatusCommand { Id = id, Status = status, UserId = userId });
             return Ok();
         }
     }
