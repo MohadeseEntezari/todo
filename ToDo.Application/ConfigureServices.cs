@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using MediatR;
+using MediatrTutorial.Infrastructure.Behaviours;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using ToDo.Application.Common.Mappings;
 
@@ -9,9 +12,16 @@ namespace ToDo.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehaviour<,>));
+
+            AssemblyScanner.FindValidatorsInAssembly(Assembly.Load("ToDo.Application"))
+                .ForEach(result => { services.AddTransient(result.InterfaceType, result.ValidatorType); });
+
             services.AddAutoMapperConfiguration();
+
             return services;
 
         }
     }
 }
+    

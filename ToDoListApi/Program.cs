@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using ToDo.Application;
 using ToDo.Application.Common.Authentication;
-using ToDo.Domain.Entities;
 using ToDo.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -24,7 +22,7 @@ builder.Services.AddSwaggerGen(opt =>
         Description = "Enter token",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
+        BearerFormat = "JWT",   
         Scheme = "bearer"
     });
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -45,7 +43,6 @@ builder.Services.AddSwaggerGen(opt =>
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
-
 
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
