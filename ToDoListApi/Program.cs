@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using ToDo.Application;
 using ToDo.Application.Common.Authentication;
+using ToDo.Application.Common.Interfaces;
 using ToDo.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +24,7 @@ builder.Services.AddSwaggerGen(opt =>
         Description = "Enter token",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",   
+        BearerFormat = "JWT",
         Scheme = "bearer"
     });
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -68,6 +70,9 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true
     };
 });
+builder.Services.AddScoped<IApplicationContextDb, ApplicationContextDb>();
+
+
 
 var app = builder.Build();
 

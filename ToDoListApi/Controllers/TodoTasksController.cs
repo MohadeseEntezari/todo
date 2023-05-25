@@ -14,7 +14,7 @@ namespace ToDoListApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Policy = "userTasks")]
     public class TodoTasksController : ControllerBase
     {
         private readonly IMediator _mediator;
