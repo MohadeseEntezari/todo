@@ -1,14 +1,14 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ToDo.Application.Common.Interfaces;
 using ToDo.Domain.Entities;
-using ToDo.Persistence;
 
 namespace ToDo.Application.ToDoTasks.Queries.GetAll
 {
     public class GetAllToDoTaskQueryHandler : IRequestHandler<GetAllToDoTaskQuery, IEnumerable<ToDoTask>>
     {
-        private readonly ApplicationContextDb _context;
-        public GetAllToDoTaskQueryHandler(ApplicationContextDb context)
+        private readonly IApplicationContextDb _context;
+        public GetAllToDoTaskQueryHandler(IApplicationContextDb context)
         {
             _context = context;
         }

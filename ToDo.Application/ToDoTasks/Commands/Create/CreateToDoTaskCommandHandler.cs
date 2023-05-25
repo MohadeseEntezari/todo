@@ -1,22 +1,26 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using ToDo.Application.Common.Interfaces;
 using ToDo.Domain.Entities;
-using ToDo.Persistence;
 
 namespace ToDo.Application.ToDoTasks.Commands.Create
 {
     public class CreateToDoTaskCommandHandler : IRequestHandler<CreateToDoTaskCommand, ToDoTask>
     {
-        private readonly ApplicationContextDb _context;
+        private readonly IApplicationContextDb _context;
         private readonly IMapper _mapper;
-        public CreateToDoTaskCommandHandler(ApplicationContextDb context, IMapper mapper)
+        private readonly UserManager<IdentityUser> _userManager;
+        public CreateToDoTaskCommandHandler(IApplicationContextDb context, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _mapper = mapper;
+            _userManager = userManager;
         }
         public async Task<ToDoTask> Handle(CreateToDoTaskCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FindAsync(request.UserId);
+            var user = _userManager.Users.SingleOrDefault(u => u.Id == request.UserId);
+
             if (user == null)
                 return null;
 

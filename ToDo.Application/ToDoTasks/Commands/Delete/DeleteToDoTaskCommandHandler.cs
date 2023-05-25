@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ToDo.Persistence;
+using ToDo.Application.Common.Interfaces;
 
 namespace ToDo.Application.ToDoTasks.Commands.Delete
 {
     public class DeleteToDoTaskCommandHandler : IRequestHandler<DeleteToDoTaskCommand>
     {
-        private readonly ApplicationContextDb _context;
-        public DeleteToDoTaskCommandHandler(ApplicationContextDb context)
+        private readonly IApplicationContextDb _context;
+        public DeleteToDoTaskCommandHandler(IApplicationContextDb context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ namespace ToDo.Application.ToDoTasks.Commands.Delete
                 throw new Exception("Not Found!");
 
             _context.ToDoTasks.Remove(task);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
         }
     }

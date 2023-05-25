@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using ToDo.Application.Common.Interfaces;
 
 namespace ToDo.Persistence
 {
@@ -16,6 +17,7 @@ namespace ToDo.Persistence
             services.Configure<IdentityOptions>(options =>
                 options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
+            services.AddScoped<IApplicationContextDb, ApplicationContextDb>();
             return services;
         }
     }

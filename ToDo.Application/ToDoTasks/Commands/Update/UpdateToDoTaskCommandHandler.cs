@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ToDo.Persistence;
+using ToDo.Application.Common.Interfaces;
 
 namespace ToDo.Application.ToDoTasks.Commands.Update
 {
     public class UpdateToDoTaskCommandHandler : IRequestHandler<UpdateToDoTaskCommand>
     {
-        private readonly ApplicationContextDb _context;
-        public UpdateToDoTaskCommandHandler(ApplicationContextDb context)
+        private readonly IApplicationContextDb _context;
+        public UpdateToDoTaskCommandHandler(IApplicationContextDb context)
         {
             _context = context;
         }

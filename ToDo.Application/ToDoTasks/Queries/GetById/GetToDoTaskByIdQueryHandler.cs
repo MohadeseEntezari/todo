@@ -1,15 +1,13 @@
-﻿using AutoMapper;
-using MediatR;
-using ToDo.Application.Common.Models;
+﻿using MediatR;
+using ToDo.Application.Common.Interfaces;
 using ToDo.Domain.Entities;
-using ToDo.Persistence;
 
 namespace ToDo.Application.ToDoTasks.Queries.GetById
 {
     public class GetToDoTaskByIdQueryHandler : IRequestHandler<GetToDoTaskByIdQuery, ToDoTask>
     {
-        private readonly ApplicationContextDb _context;
-        public GetToDoTaskByIdQueryHandler(ApplicationContextDb context)
+        private readonly IApplicationContextDb _context;
+        public GetToDoTaskByIdQueryHandler(IApplicationContextDb context)
         {
             _context = context;
         }
